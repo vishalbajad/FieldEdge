@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FieldEdge.API.HTTP.Connector.Interfaces;
 using FieldEdge.Services.Object_Provider;
+using System.Net.Http;
 
 namespace FieldEdge.Server.Services
 {
@@ -19,6 +20,12 @@ namespace FieldEdge.Server.Services
         {
             var customersList = await _customerRepository.GetCustomersAsync();
             return _mapper.Map<IEnumerable<Customer>>(customersList);
+        }
+
+        public async Task<Customer> GetCustomerByIdAsync(int customerId)
+        {
+            var response = await _customerRepository.GetCustomerByIdAsync(customerId);
+            return _mapper.Map<Customer>(response);
         }
     }
 }

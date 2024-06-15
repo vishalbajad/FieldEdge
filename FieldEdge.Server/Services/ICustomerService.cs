@@ -5,5 +5,6 @@ namespace FieldEdge.Server.Services
     public interface ICustomerService
     {
         Task<IEnumerable<Customer>> GetAllCustomers();
+        Task<Customer> GetCustomerByIdAsync(int customerId);
     }
 }

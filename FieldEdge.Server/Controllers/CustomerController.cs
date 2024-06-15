@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace FieldEdge.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api")]
     public class CustomerController : ControllerBase
     {
         private readonly ILogger<CustomerController> _logger;
@@ -22,11 +22,18 @@ namespace FieldEdge.Server.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-        [HttpGet]
+
+        [HttpGet("Customers")]
         public IEnumerable<Customer> Get()
         {
             _logger.Log(LogLevel.Information, " Start Method Execution GetAllCustomers ");
             return _customerService.GetAllCustomers().Result;
+        }
+
+        [HttpGet("Customer/{id}")]
+        public Customer Get(int id)
+        {
+            return _customerService.GetCustomerByIdAsync(id).Result;
         }
     }
 }

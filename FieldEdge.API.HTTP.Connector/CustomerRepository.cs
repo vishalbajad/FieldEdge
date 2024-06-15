@@ -1,5 +1,6 @@
 ﻿using FieldEdge.API.HTTP.Connector.Interfaces;
 using FieldEdge.API.Object_Provider;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -21,14 +22,19 @@ namespace FieldEdge.API.HTTP.Connector
         {
             HttpResponseMessage response = await _httpClient.GetAsync("customers");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<IEnumerable<Customer>>();
+
+            string json = await response.Content.ReadAsStringAsync();
+            var customers = JsonConvert.DeserializeObject<IEnumerable<Customer>>(json);
+            return customers;
         }
 
         public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            var response = await _httpClient.GetAsync($"customers/{customerId}");
+            var response = await _httpClient.GetAsync($"customer/{customerId}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Customer>();
+            string json = await response.Content.ReadAsStringAsync();
+            var customer = JsonConvert.DeserializeObject<Customer>(json);
+            return customer;
         }
 
         public async Task<Customer> AddCustomerAsync(Customer newCustomer)
