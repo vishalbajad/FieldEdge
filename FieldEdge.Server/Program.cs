@@ -1,13 +1,21 @@
+using FieldEdge.API.HTTP.Connector.Interfaces;
+using FieldEdge.API.HTTP.Connector;
+using FieldEdge.Object_Provider;
+using FieldEdge.Server.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<AppSettingsConfigurations>(builder.Configuration.GetSection("SystemConfigurations"));
+builder.Services.AddHttpClient<ICustomerRepository, CustomerRepository>();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<ICustomerService, CustomerService>(); 
 
 var app = builder.Build();
+
+app.UseExceptionHandler("/Error");
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -20,6 +28,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

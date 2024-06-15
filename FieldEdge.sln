@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldEdge.Server", "FieldEd
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "fieldedge.client", "fieldedge.client\fieldedge.client.esproj", "{F865EC54-9F7B-41C2-92ED-66EBA4559506}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldEdge.API.HTTP.Connector", "FieldEdge.API.HTTP.Connector\FieldEdge.API.HTTP.Connector.csproj", "{28BB6584-3601-43BA-B8CC-6C20D871169C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldEdge.Services.Object_Provider", "FieldEdge.Object_Provider\FieldEdge.Services.Object_Provider.csproj", "{AE280075-B054-4ADA-B15C-9557180CADE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldEdge.API.Object_Provider", "FieldEdge.API.Object_Provider\FieldEdge.API.Object_Provider.csproj", "{6AF910EE-CF00-497D-97DE-6DE6154AF36D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +29,18 @@ Global
 		{F865EC54-9F7B-41C2-92ED-66EBA4559506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F865EC54-9F7B-41C2-92ED-66EBA4559506}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F865EC54-9F7B-41C2-92ED-66EBA4559506}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{28BB6584-3601-43BA-B8CC-6C20D871169C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28BB6584-3601-43BA-B8CC-6C20D871169C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28BB6584-3601-43BA-B8CC-6C20D871169C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28BB6584-3601-43BA-B8CC-6C20D871169C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE280075-B054-4ADA-B15C-9557180CADE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE280075-B054-4ADA-B15C-9557180CADE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE280075-B054-4ADA-B15C-9557180CADE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE280075-B054-4ADA-B15C-9557180CADE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AF910EE-CF00-497D-97DE-6DE6154AF36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AF910EE-CF00-497D-97DE-6DE6154AF36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AF910EE-CF00-497D-97DE-6DE6154AF36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AF910EE-CF00-497D-97DE-6DE6154AF36D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

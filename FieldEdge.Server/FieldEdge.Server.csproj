@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>8.*-*</Version>
     </PackageReference>
@@ -17,9 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FieldEdge.API.HTTP.Connector\FieldEdge.API.HTTP.Connector.csproj" />
     <ProjectReference Include="..\fieldedge.client\fieldedge.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\FieldEdge.Object_Provider\FieldEdge.Services.Object_Provider.csproj" />
   </ItemGroup>
 
 </Project>
