@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FieldEdge.API.Object_Provider\FieldEdge.API.Object_Provider.csproj" />
     <ProjectReference Include="..\FieldEdge.Object_Provider\FieldEdge.Services.Object_Provider.csproj" />
   </ItemGroup>
