@@ -1,0 +1,6 @@
+@FieldEdge.Server_HostAddress = http://localhost:5261
+
+GET {{FieldEdge.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
