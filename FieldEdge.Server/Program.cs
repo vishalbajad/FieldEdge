@@ -1,10 +1,7 @@
-using FieldEdge.API.HTTP.Connector.Interfaces;
 using FieldEdge.API.HTTP.Connector;
-using FieldEdge.Object_Provider;
+using FieldEdge.API.HTTP.Connector.Interfaces;
 using FieldEdge.Server.Services;
 using System.Net.Http.Headers;
-using System.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +20,10 @@ builder.Services.AddHttpClient<ICustomerRepository, CustomerRepository>("FieldEd
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddScoped<ICustomerService, CustomerService>(); 
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+// Default Policy
+builder.Services.AddCors(options => { options.AddDefaultPolicy(builder => { builder.WithOrigins("https://localhost:7190", "https://localhost:5173").AllowAnyHeader().AllowAnyMethod(); }); });
 
 var app = builder.Build();
 
