@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FieldEdge.Services.Object_Provider
 {
+    /// <summary>
+    /// Customer Model for Service Transactions
+    /// </summary>
     public class Customer
     {
         public int Id { get; set; }

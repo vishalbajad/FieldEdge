@@ -1,5 +1,8 @@
 ﻿namespace FieldEdge.Object_Provider
 {
+    /// <summary>
+    /// Remote Server API Details for Communications
+    /// </summary>
     public class ApiServer
     {
         public string ServerBaseUrl { get; set; }

@@ -2,6 +2,9 @@
 using System.Text.Json.Serialization;
 namespace FieldEdge.API.Object_Provider
 {
+    /// <summary>
+    /// Customer Model For API 
+    /// </summary>
     public class Customer
     {
         [JsonPropertyName("id")]

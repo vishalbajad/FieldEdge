@@ -12,16 +12,12 @@ namespace FieldEdge.Server.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ILogger<CustomerController> _logger;
-        private readonly AppSettingsConfigurations appSettingsConfigurations;
-        private readonly IMapper _mapper;
         private readonly ICustomerService _customerService;
 
-        public CustomerController(IMapper mapper, IOptions<AppSettingsConfigurations> options, ILogger<CustomerController> logger, IWebHostEnvironment environment, ICustomerService customerService)
+        public CustomerController(IMapper mapper, ILogger<CustomerController> logger, ICustomerService customerService)
         {
-            appSettingsConfigurations = options.Value;
             _customerService = customerService;
             _logger = logger;
-            _mapper = mapper;
         }
 
         [HttpGet("Customers")]

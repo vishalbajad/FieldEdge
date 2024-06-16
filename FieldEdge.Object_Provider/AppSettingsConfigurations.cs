@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FieldEdge.Object_Provider
 {
+    /// <summary>
+    /// App Setting Configuration Model
+    /// </summary>
     public class AppSettingsConfigurations
     {
         public string APIServerBaseUrl { get; set; }
