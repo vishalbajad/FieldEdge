@@ -1,5 +1,5 @@
 ﻿using FieldEdge.API.HTTP.Connector.Interfaces;
-using FieldEdge.API.Object_Provider;
+using FieldEdge.Services.Object_Provider;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -18,44 +18,32 @@ namespace FieldEdge.API.HTTP.Connector
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<IEnumerable<Customer>> GetCustomersAsync()
+        public async Task<IEnumerable<Customer>> GetCustomers()
         {
-            HttpResponseMessage response = await _httpClient.GetAsync("customers");
-            response.EnsureSuccessStatusCode();
-
-            string json = await response.Content.ReadAsStringAsync();
-            var customers = JsonConvert.DeserializeObject<IEnumerable<Customer>>(json);
+            var customers = await _httpClient.GetFromJsonAsync<IEnumerable<Customer>>("customers");
             return customers;
         }
 
         public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            var response = await _httpClient.GetAsync($"customer/{customerId}");
-            response.EnsureSuccessStatusCode();
-            string json = await response.Content.ReadAsStringAsync();
-            var customer = JsonConvert.DeserializeObject<Customer>(json);
-            return customer;
+            var response = await _httpClient.GetFromJsonAsync<Customer>($"customer/{customerId}");
+            return response;
         }
 
-        public async Task<Customer> AddCustomerAsync(Customer newCustomer)
+        public async Task<HttpResponseMessage> AddCustomer(Customer newCustomer)
         {
             var response = await _httpClient.PostAsJsonAsync("customers", newCustomer);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Customer>();
+            return response;
         }
 
-        public async Task<Customer> UpdateCustomerAsync(int customerId, Customer updatedCustomer)
+        public async Task<HttpResponseMessage> UpdateCustomer(int customerId, Customer updatedCustomer)
         {
-            var response = await _httpClient.PutAsJsonAsync($"customers/{customerId}", updatedCustomer);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Customer>();
+            return await _httpClient.PutAsJsonAsync($"customers/{customerId}", updatedCustomer);
         }
 
-        public async Task DeleteCustomerAsync(int customerId)
+        public async Task<HttpResponseMessage> DeleteCustomer(int customerId)
         {
-            var response = await _httpClient.DeleteAsync($"customers/{customerId}");
-            response.EnsureSuccessStatusCode();
+            return await _httpClient.DeleteAsync($"customers/{customerId}");
         }
     }
-
 }

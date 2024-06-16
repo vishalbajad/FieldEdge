@@ -15,6 +15,7 @@ namespace FieldEdge.Server.Controllers
         private readonly AppSettingsConfigurations appSettingsConfigurations;
         private readonly IMapper _mapper;
         private readonly ICustomerService _customerService;
+
         public CustomerController(IMapper mapper, IOptions<AppSettingsConfigurations> options, ILogger<CustomerController> logger, IWebHostEnvironment environment, ICustomerService customerService)
         {
             appSettingsConfigurations = options.Value;
@@ -33,7 +34,25 @@ namespace FieldEdge.Server.Controllers
         [HttpGet("Customer/{id}")]
         public Customer Get(int id)
         {
-            return _customerService.GetCustomerByIdAsync(id).Result;
+            return _customerService.GetCustomerById(id).Result;
+        }
+
+        [HttpPost("Customer")]
+        public Task<HttpResponseMessage> Post(Customer customer)
+        {
+            return _customerService.AddCustomer(customer);
+        }
+
+        [HttpPost("Customer/{id}")]
+        public Task<HttpResponseMessage> UpdateCustomer(int id, Customer customer)
+        {
+            return _customerService.UpdateCustomer(id, customer);
+        }
+
+        [HttpDelete("Customer/{id}")]
+        public Task<HttpResponseMessage> DeleteCustomer(int id)
+        {
+            return _customerService.DeleteCustomer(id);
         }
     }
 }
