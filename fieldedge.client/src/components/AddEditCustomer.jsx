@@ -117,7 +117,7 @@ const AddCustomer = () => {
                 </div>
                 <div className="form-group">
                     <label>First Name:</label>
-                    <input type="text" className="form-control" name="firstname" value={formData.firstname} onChange={handleChange} />
+                    <input type="text" className="form-control" name="firstname" value={formData.firstname} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
                     <label>First Name ASCII:</label>
@@ -137,7 +137,7 @@ const AddCustomer = () => {
                 </div>
                 <div className="form-group">
                     <label>Last Name:</label>
-                    <input type="text" className="form-control" name="lastname" value={formData.lastname} onChange={handleChange} />
+                    <input type="text" className="form-control" name="lastname" value={formData.lastname} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
                     <label>Last Name ASCII:</label>
@@ -153,7 +153,7 @@ const AddCustomer = () => {
                 </div>
                 <div className="form-group">
                     <label>Email:</label>
-                    <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
+                    <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required/>
                 </div>
                 <div className="form-group">
                     <label>Password:</label>
