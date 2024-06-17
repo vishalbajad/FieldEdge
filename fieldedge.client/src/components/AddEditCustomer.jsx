@@ -1,35 +1,69 @@
 // AddCustomer.js
 
-import React, { useState } from 'react';
-import './AddCustomer.css'; // Import the CSS file for styling
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../css/AddCustomer.css'; // Import the CSS file for styling
+import { useLocation } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AddCustomer = () => {
+    
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+
+    const customerid = queryParams.get('customerid');
+    const title = (customerid > 0 ? 'Update': 'Create')
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        id: 40,
-        salutation: 'Ms.',
-        initials: 'V.',
-        firstname: 'Velma',
+        id: '',
+        salutation: '',
+        initials: '',
+        firstname: '',
         firstnameAscii: '',
-        gender: 'f',
+        gender: '',
         firstnameCountryRank: '',
         firstnameCountryFrequency: '',
-        lastname: 'Foltz',
+        lastname: '',
         lastnameAscii: '',
         lastnameCountryRank: '',
         lastnameCountryFrequency: '',
-        email: 'velma.foltz@protonmail.com',
-        password: 'VF90-qECkzw|',
+        email: '',
+        password: '',
         countryCode: '',
         countryCodeAlpha: '',
         countryName: '',
         primaryLanguageCode: '',
         primaryLanguage: '',
-        balance: 742.13,
+        balance: '',
         phoneNumber: '',
-        currency: 'USD'
+        currency: ''
     });
+
+    useEffect(() => {
+        if (customerid > 0)
+            getCustomers(customerid);
+    }, []);
+
+    const getCustomers = async (id) => {
+        try {
+            await axios.get(`https://localhost:7190/api/Customer/${id}`)
+                .then(response => {
+                    if (response.data && Object.keys(response.data).length > 0) {
+                        console.log(response.data); // Log the response data
+                        setFormData(response.data);
+                    } else {
+                        // Handle other cases, such as response.data being null or an object
+                        console.error('Unexpected data structure:', response.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching customers:', error);
+                });
+        } catch (error) {
+            console.error('Error fetching customers:', error);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,71 +72,126 @@ const AddCustomer = () => {
             [name]: value
         }));
     };
-
-    const handleSubmit = (e) => {
+    const handleHomePage = () => {
+        navigate('/');
+    };
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData); // For demonstration, log form data
-        // Add logic to save data (e.g., send to API)
-        // Reset form after submission
-        setFormData({
-            id: '',
-            salutation: '',
-            initials: '',
-            firstname: '',
-            firstnameAscii: '',
-            gender: '',
-            firstnameCountryRank: '',
-            firstnameCountryFrequency: '',
-            lastname: '',
-            lastnameAscii: '',
-            lastnameCountryRank: '',
-            lastnameCountryFrequency: '',
-            email: '',
-            password: '',
-            countryCode: '',
-            countryCodeAlpha: '',
-            countryName: '',
-            primaryLanguageCode: '',
-            primaryLanguage: '',
-            balance: '',
-            phoneNumber: '',
-            currency: ''
-        });
+
+        const url = 'https://localhost:7190/api/Customer' + (customerid > 0 ? '/'+customerid : '');
+        if (window.confirm(`Are you sure you want to ${title} the customer detials ?`)) {
+            try {
+                await axios.post(url, formData)
+                    .then(response => {
+                        console.log('Post success:', response.data);
+                        alert(`User ${title} successfully!`);
+                        handleHomePage();
+                    })
+                    .catch(error => {
+                        console.error('Post error:', error);
+                        alert('Error creating user. Please try again.');
+                    });
+
+            } catch (error) {
+                console.error(`Error ${title} customer :`, error.response ? error.response.data : error.message);
+            }
+        }
     };
 
     return (
-        <div className="add-customer-container">
-            <h1>Add Customer</h1>
-            <form className="add-customer-form" onSubmit={handleSubmit}>
+        <div className="container mt-5">
+            <h2>{title} Customer Details</h2>
+            <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="firstname">First Name:</label>
-                    <input type="text" id="firstname" name="firstname" value={formData.firstname} onChange={handleChange} required />
+                    <label>ID:</label>
+                    <input type="text" className="form-control" name="id" value={formData.id} onChange={handleChange} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="lastname">Last Name:</label>
-                    <input type="text" id="lastname" name="lastname" value={formData.lastname} onChange={handleChange} required />
+                    <label>Salutation:</label>
+                    <input type="text" className="form-control" name="salutation" value={formData.salutation} onChange={handleChange} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="email">Email:</label>
-                    <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+                    <label>Initials:</label>
+                    <input type="text" className="form-control" name="initials" value={formData.initials} onChange={handleChange} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+                    <label>First Name:</label>
+                    <input type="text" className="form-control" name="firstname" value={formData.firstname} onChange={handleChange} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="balance">Balance:</label>
-                    <input type="text" id="balance" name="balance" value={formData.balance} onChange={handleChange} />
+                    <label>First Name ASCII:</label>
+                    <input type="text" className="form-control" name="firstnameAscii" value={formData.firstnameAscii} onChange={handleChange} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="gender">Gender:</label>
-                    <select id="gender" name="gender" value={formData.gender} onChange={handleChange}>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
-                        <option value="o">Other</option>
-                    </select>
+                    <label>Gender:</label>
+                    <input type="text" className="form-control" name="gender" value={formData.gender} onChange={handleChange} />
                 </div>
-                <button type="submit">Save Customer</button> &nbsp; <button onClick={navigate("/")}>Cancel</button>
+                <div className="form-group">
+                    <label>First Name Country Rank:</label>
+                    <input type="text" className="form-control" name="firstnameCountryRank" value={formData.firstnameCountryRank} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>First Name Country Frequency:</label>
+                    <input type="text" className="form-control" name="firstnameCountryFrequency" value={formData.firstnameCountryFrequency} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Last Name:</label>
+                    <input type="text" className="form-control" name="lastname" value={formData.lastname} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Last Name ASCII:</label>
+                    <input type="text" className="form-control" name="lastnameAscii" value={formData.lastnameAscii} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Last Name Country Rank:</label>
+                    <input type="text" className="form-control" name="lastnameCountryRank" value={formData.lastnameCountryRank} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Last Name Country Frequency:</label>
+                    <input type="text" className="form-control" name="lastnameCountryFrequency" value={formData.lastnameCountryFrequency} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Email:</label>
+                    <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Password:</label>
+                    <input type="password" className="form-control" name="password" value={formData.password} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Country Code:</label>
+                    <input type="text" className="form-control" name="countryCode" value={formData.countryCode} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Country Code Alpha:</label>
+                    <input type="text" className="form-control" name="countryCodeAlpha" value={formData.countryCodeAlpha} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Country Name:</label>
+                    <input type="text" className="form-control" name="countryName" value={formData.countryName} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Primary Language Code:</label>
+                    <input type="text" className="form-control" name="primaryLanguageCode" value={formData.primaryLanguageCode} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Primary Language:</label>
+                    <input type="text" className="form-control" name="primaryLanguage" value={formData.primaryLanguage} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Balance:</label>
+                    <input type="text" className="form-control" name="balance" value={formData.balance} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Phone Number:</label>
+                    <input type="text" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label>Currency:</label>
+                    <input type="text" className="form-control" name="currency" value={formData.currency} onChange={handleChange} />
+                </div>
+                <button type="submit" className="btn btn-primary">Save</button> <button onClick={handleHomePage}>Cancel</button>
             </form>
         </div>
     );
