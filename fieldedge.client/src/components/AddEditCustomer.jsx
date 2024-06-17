@@ -171,6 +171,7 @@ const AddCustomer = () => {
                     <label>Currency:</label>
                     <input type="text" className="form-control" name="currency" value={formData.currency} onChange={handleChange} />
                 </div>
+                <br/>
                 <button type="submit" className="btn btn-primary">Save</button> &nbsp;
                 <button type="button" className="btn btn-secondary" onClick={handleHomePage}>Cancel</button>
             </form>
