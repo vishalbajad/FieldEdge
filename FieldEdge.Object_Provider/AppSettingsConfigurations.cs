@@ -11,6 +11,7 @@ namespace FieldEdge.Object_Provider
     /// </summary>
     public class AppSettingsConfigurations
     {
+        public string Origins { get; set; }
         public string APIServerBaseUrl { get; set; }
         public string APIServerUsername { get; set; }
         public string APIServerPassword { get; set; }

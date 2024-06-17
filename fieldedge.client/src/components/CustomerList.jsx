@@ -8,7 +8,7 @@ const CustomerList = () => {
     const [customers, setCustomers] = useState([]);
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const customersPerPage = 5; // Number of customers per page
+    const customersPerPage = 10; // Number of customers per page
 
     // Fetch customers on component mount
     useEffect(() => {

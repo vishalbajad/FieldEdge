@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using FieldEdge.Object_Provider;
 using FieldEdge.Server.Services;
 using FieldEdge.Services.Object_Provider;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace FieldEdge.Server.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("api")]
     public class CustomerController : ControllerBase
@@ -14,41 +13,72 @@ namespace FieldEdge.Server.Controllers
         private readonly ILogger<CustomerController> _logger;
         private readonly ICustomerService _customerService;
 
-        public CustomerController(IMapper mapper, ILogger<CustomerController> logger, ICustomerService customerService)
+        public CustomerController(ILogger<CustomerController> logger, ICustomerService customerService)
         {
-            _customerService = customerService;
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
         }
 
         [HttpGet("Customers")]
-        public IEnumerable<Customer> Get()
+        public async Task<ActionResult<IEnumerable<Customer>>> Get()
         {
-            _logger.Log(LogLevel.Information, " Start Method Execution GetAllCustomers ");
-            return _customerService.GetAllCustomers().Result;
+            _logger.LogInformation("Fetching all customers");
+
+            var customers = await _customerService.GetAllCustomers();
+
+            return Ok(customers);
         }
 
         [HttpGet("Customer/{id}")]
-        public Customer Get(int id)
+        public async Task<ActionResult<Customer>> Get(int id)
         {
-            return _customerService.GetCustomerById(id).Result;
+            _logger.LogInformation("Fetching customer with ID {Id}", id);
+
+            var customer = await _customerService.GetCustomerById(id);
+
+            if (customer == null) return NotFound();
+            return Ok(customer);
         }
 
         [HttpPost("Customer")]
-        public Task<HttpResponseMessage> Post(Customer customer)
+        public async Task<ActionResult<HttpResponseMessage>> Post(Customer customer)
         {
-            return _customerService.AddCustomer(customer);
+            _logger.LogInformation("Adding a new customer");
+
+            var response = await _customerService.AddCustomer(customer);
+
+            if (!response.IsSuccessStatusCode) return this.BadRequest();
+
+            return Ok(response);
         }
 
         [HttpPost("Customer/{id}")]
-        public Task<HttpResponseMessage> UpdateCustomer(int id, Customer customer)
+        public async Task<ActionResult<HttpResponseMessage>> UpdateCustomer(int id, Customer customer)
         {
-            return _customerService.UpdateCustomer(id, customer);
+            _logger.LogInformation("Updating customer with ID {Id}", id);
+
+            if (id != customer.Id) return BadRequest("ID mismatch between route parameter and request body.");
+
+            var response = await _customerService.UpdateCustomer(id, customer);
+
+            if (!response.IsSuccessStatusCode) return BadRequest();
+
+            return NoContent();
         }
 
         [HttpDelete("Customer/{id}")]
-        public Task<HttpResponseMessage> DeleteCustomer(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            return _customerService.DeleteCustomer(id);
+            _logger.LogInformation("Deleting customer with ID {Id}", id);
+
+            var response = await _customerService.DeleteCustomer(id);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
         }
     }
 }
