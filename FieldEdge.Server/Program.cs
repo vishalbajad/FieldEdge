@@ -1,27 +1,27 @@
 using FieldEdge.API.HTTP.Connector;
 using FieldEdge.API.HTTP.Connector.Interfaces;
 using FieldEdge.API.HTTP.Connector.Repositories;
+using FieldEdge.Object_Provider;
 using FieldEdge.Server.Services;
+using FieldEdge.API.Object_Provider;
 using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configurations = builder.Configuration.GetSection("SystemConfigurations");
-
+builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddControllers().AddJsonOptions(x => { x.JsonSerializerOptions.PropertyNameCaseInsensitive = true; });
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddHttpClient<ICustomerRepository, CustomerRepository>("FieldEdge", client =>
+builder.Services.Configure<AppSettingsConfigurations>(builder.Configuration.GetSection("SystemConfigurations"));
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IHttpRepository<Customer>, HttpRepository<Customer>>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddHttpClient<IHttpRepository<Customer>, HttpRepository<Customer>>("FieldEdge", client =>
 {
-    client.BaseAddress = new Uri(configurations["APIServerBaseUrl"].ToString());
     client.DefaultRequestHeaders.Accept.Clear();
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Default Policy
 builder.Services.AddCors(options => { options.AddDefaultPolicy(builder => { builder.WithOrigins("https://localhost:7190", "https://localhost:5173").AllowAnyHeader().AllowAnyMethod(); }); });
