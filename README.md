@@ -20,6 +20,7 @@ Microsoft.Extensions.Logging: Logging framework for capturing runtime informatio
 Swagger: API documentation and testing tool for interactive API exploration
 
 **Controller Details**
+
 CustomerController
 
 The CustomerController exposes endpoints for managing customer data:
@@ -38,6 +39,8 @@ Screenshot :
 ![image](https://github.com/vishalbajad/FieldEdge/assets/14272268/fe409896-556d-4240-b4f2-056c1b0251fe)
 
 ![image](https://github.com/vishalbajad/FieldEdge/assets/14272268/3ceabd24-24bd-4735-bb47-b526be04ccd9)
+
+![image](https://github.com/vishalbajad/FieldEdge/assets/14272268/d45cb56b-1cb5-45d3-8109-83e2d227521e)
 
 
 
