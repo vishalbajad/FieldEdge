@@ -1,20 +1,15 @@
-// AddCustomer.js
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import '../css/AddCustomer.css'; // Import the CSS file for styling
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AddCustomer = () => {
-    
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-
     const customerid = queryParams.get('customerid');
-    const title = (customerid > 0 ? 'Update': 'Create')
-    const navigate = useNavigate();
+    const title = customerid > 0 ? 'Update' : 'Create';
+
     const [formData, setFormData] = useState({
         id: '',
         salutation: '',
@@ -41,27 +36,17 @@ const AddCustomer = () => {
     });
 
     useEffect(() => {
-        if (customerid > 0)
-            getCustomers(customerid);
-    }, []);
+        if (customerid > 0) {
+            getCustomer(customerid);
+        }
+    }, [customerid]);
 
-    const getCustomers = async (id) => {
+    const getCustomer = async (id) => {
         try {
-            await axios.get(`https://localhost:7190/api/Customer/${id}`)
-                .then(response => {
-                    if (response.data && Object.keys(response.data).length > 0) {
-                        console.log(response.data); // Log the response data
-                        setFormData(response.data);
-                    } else {
-                        // Handle other cases, such as response.data being null or an object
-                        console.error('Unexpected data structure:', response.data);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching customers:', error);
-                });
+            const response = await axios.get(`https://localhost:7190/api/Customer/${id}`);
+            setFormData(response.data);
         } catch (error) {
-            console.error('Error fetching customers:', error);
+            console.error('Error fetching customer:', error);
         }
     };
 
@@ -72,36 +57,31 @@ const AddCustomer = () => {
             [name]: value
         }));
     };
+
     const handleHomePage = () => {
         navigate('/');
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData); // For demonstration, log form data
+        const url = `https://localhost:7190/api/Customer${customerid > 0 ? `/${customerid}` : ''}`;
 
-        const url = 'https://localhost:7190/api/Customer' + (customerid > 0 ? '/'+customerid : '');
-        if (window.confirm(`Are you sure you want to ${title} the customer detials ?`)) {
-            try {
-                await axios.post(url, formData)
-                    .then(response => {
-                        console.log('Post success:', response.data);
-                        alert(`User ${title} successfully!`);
-                        handleHomePage();
-                    })
-                    .catch(error => {
-                        console.error('Post error:', error);
-                        alert('Error creating user. Please try again.');
-                    });
-
-            } catch (error) {
-                console.error(`Error ${title} customer :`, error.response ? error.response.data : error.message);
+        try {
+            if (window.confirm(`Are you sure you want to ${title} the customer details?`)) {
+                const response = await axios.post(url, formData);
+                console.log('Post success:', response.data);
+                alert(`User ${title} successfully!`);
+                handleHomePage();
             }
+        } catch (error) {
+            console.error(`Error ${title.toLowerCase()} customer:`, error.response ? error.response.data : error.message);
+            alert(`Error ${title.toLowerCase()} customer. Please try again.`);
         }
     };
 
     return (
         <div className="container mt-5">
-            <h2>{title} Customer Details</h2>
+            <h2>{`${title} Customer Details`}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>ID:</label>
@@ -153,7 +133,7 @@ const AddCustomer = () => {
                 </div>
                 <div className="form-group">
                     <label>Email:</label>
-                    <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required/>
+                    <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
                     <label>Password:</label>
@@ -191,7 +171,8 @@ const AddCustomer = () => {
                     <label>Currency:</label>
                     <input type="text" className="form-control" name="currency" value={formData.currency} onChange={handleChange} />
                 </div>
-                <button type="submit" className="btn btn-primary">Save</button> <button onClick={handleHomePage}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Save</button> &nbsp;
+                <button type="button" className="btn btn-secondary" onClick={handleHomePage}>Cancel</button>
             </form>
         </div>
     );

@@ -1,5 +1,6 @@
 using FieldEdge.API.HTTP.Connector;
 using FieldEdge.API.HTTP.Connector.Interfaces;
+using FieldEdge.API.HTTP.Connector.Repositories;
 using FieldEdge.Server.Services;
 using System.Net.Http.Headers;
 

@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace FieldEdge.API.HTTP.Connector
+namespace FieldEdge.API.HTTP.Connector.Repositories
 {
     /// <summary>
     /// Customer Repository
@@ -25,7 +25,7 @@ namespace FieldEdge.API.HTTP.Connector
         /// <returns></returns>
         public async Task<IEnumerable<Customer>> GetCustomers()
         {
-            var customers = await this._httpClient.GetFromJsonAsync<IEnumerable<Customer>>("customers");
+            var customers = await _httpClient.GetFromJsonAsync<IEnumerable<Customer>>("customers");
             return customers;
         }
         /// <summary>
@@ -35,7 +35,7 @@ namespace FieldEdge.API.HTTP.Connector
         /// <returns></returns>
         public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            var response = await this._httpClient.GetFromJsonAsync<Customer>($"customer/{customerId}");
+            var response = await _httpClient.GetFromJsonAsync<Customer>($"customer/{customerId}");
             return response;
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace FieldEdge.API.HTTP.Connector
         /// <returns></returns>
         public async Task<HttpResponseMessage> AddCustomer(Customer newCustomer)
         {
-            var response = await this._httpClient.PostAsJsonAsync("customer", newCustomer);
+            var response = await _httpClient.PostAsJsonAsync("customer", newCustomer);
             return response;
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace FieldEdge.API.HTTP.Connector
         /// <returns></returns>
         public async Task<HttpResponseMessage> UpdateCustomer(int customerId, Customer updatedCustomer)
         {
-            return await this._httpClient.PostAsJsonAsync($"customer/{customerId}", updatedCustomer);
+            return await _httpClient.PostAsJsonAsync($"customer/{customerId}", updatedCustomer);
         }
         /// <summary>
         /// Delete Customer 
@@ -65,7 +65,7 @@ namespace FieldEdge.API.HTTP.Connector
         /// <returns></returns>
         public async Task<HttpResponseMessage> DeleteCustomer(int customerId)
         {
-            return await this._httpClient.DeleteAsync($"customer/{customerId}");
+            return await _httpClient.DeleteAsync($"customer/{customerId}");
         }
     }
 }

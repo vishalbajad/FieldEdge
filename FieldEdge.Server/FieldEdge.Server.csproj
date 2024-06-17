@@ -25,4 +25,8 @@
     <ProjectReference Include="..\FieldEdge.Object_Provider\FieldEdge.Services.Object_Provider.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authenticationss\" />
+  </ItemGroup>
+
 </Project>
