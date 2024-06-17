@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FieldEdge.API.HTTP.Connector.Interfaces;
-using FieldEdge.Services.Object_Provider;
+using Services_Object_Provider = FieldEdge.Services.Object_Provider;
+using API_Object_Provider = FieldEdge.API.Object_Provider;
 using System.Net.Http;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,10 +25,10 @@ namespace FieldEdge.Server.Services
         /// Get all customers Details
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        public async Task<IEnumerable<Services_Object_Provider.Customer>> GetAllCustomers()
         {
             var customersList = await _customerRepository.GetCustomers();
-            return _mapper.Map<IEnumerable<Customer>>(customersList);
+            return _mapper.Map<IEnumerable<Services_Object_Provider.Customer>>(customersList);
         }
 
         /// <summary>
@@ -35,10 +36,10 @@ namespace FieldEdge.Server.Services
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        public async Task<Customer> GetCustomerById(int customerId)
+        public async Task<Services_Object_Provider.Customer> GetCustomerById(int customerId)
         {
             var response = await _customerRepository.GetCustomerByIdAsync(customerId);
-            return _mapper.Map<Customer>(response);
+            return _mapper.Map<Services_Object_Provider.Customer>(response);
         }
 
         /// <summary>
@@ -46,9 +47,10 @@ namespace FieldEdge.Server.Services
         /// </summary>
         /// <param name="newCustomer"></param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> AddCustomer(Customer newCustomer)
+        public async Task<HttpResponseMessage> AddCustomer(Services_Object_Provider.Customer newCustomer)
         {
-            return await _customerRepository.AddCustomer(newCustomer);
+            var apicustomer = _mapper.Map<API_Object_Provider.Customer>(newCustomer);
+            return await _customerRepository.AddCustomer(apicustomer);
         }
 
         /// <summary>
@@ -57,9 +59,10 @@ namespace FieldEdge.Server.Services
         /// <param name="customerId"></param>
         /// <param name="updatedCustomer"></param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> UpdateCustomer(int customerId, Customer updatedCustomer)
+        public async Task<HttpResponseMessage> UpdateCustomer(int customerId, Services_Object_Provider.Customer updatedCustomer)
         {
-            return await _customerRepository.UpdateCustomer(customerId, updatedCustomer);
+            var apicustomer = _mapper.Map<API_Object_Provider.Customer>(updatedCustomer);
+            return await _customerRepository.UpdateCustomer(customerId, apicustomer);
         }
 
         /// <summary>

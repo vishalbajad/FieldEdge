@@ -1,4 +1,4 @@
-﻿using FieldEdge.Services.Object_Provider;
+﻿using FieldEdge.API.Object_Provider;
 using System.Net.Http;
 
 namespace FieldEdge.API.HTTP.Connector.Interfaces

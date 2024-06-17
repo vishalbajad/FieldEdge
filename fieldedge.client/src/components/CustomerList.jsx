@@ -102,7 +102,7 @@ const CustomerList = () => {
                             <td style={tableCell}>{customer.phoneNumber}</td>
                             <td style={tableCell}>{customer.countryCode}</td>
                             <td style={tableCell}>{customer.gender}</td>
-                            <td style={tableCell}>${parseFloat(customer.Balance).toFixed(2)}</td>
+                            <td style={tableCell}>${parseFloat(customer.balance).toFixed(2)}</td>
                             <td style={tableCell}>
                                 <button style={buttonStyle}>Edit</button>
                             </td>
